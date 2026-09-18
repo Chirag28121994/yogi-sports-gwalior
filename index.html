@@ -157,12 +157,12 @@
         🎬 Videos
       </h3>
       <div class="video-grid">
-        <div class="video-card animate-on-scroll delay-1" onclick="openVideoModal('https://www.youtube.com/@yogisportsgwalior')">
+        <div class="video-card animate-on-scroll delay-1" onclick="openVideoModal()">
           <img src="images/yogendra/shop-interior.jpg" alt="Shop Inauguration">
           <div class="play-btn">▶</div>
           <div class="video-title">Yogi Sports — Grand Inauguration</div>
         </div>
-        <div class="video-card animate-on-scroll delay-2" onclick="openVideoModal('https://www.youtube.com/@yogisportsgwalior')">
+        <div class="video-card animate-on-scroll delay-2" onclick="openVideoModal()">
           <img src="images/products/cricket-bats-display.png" alt="Cricket Training Tips">
           <div class="play-btn">▶</div>
           <div class="video-title">Cricket Training Tips by Yogendra</div>
@@ -376,38 +376,38 @@
             <div class="contact-icon">📍</div>
             <div>
               <h4>Store Location</h4>
-              <p>Opp. City Centre Mall,<br>Phool Bagh, Gwalior,<br>Madhya Pradesh 474001</p>
+              <p data-bind="store-address"></p>
             </div>
           </div>
           <div class="contact-item">
             <div class="contact-icon">📞</div>
             <div>
               <h4>Phone</h4>
-              <p><a href="tel:+919301878889" class="contact-link">+91 93018 78889</a></p>
+              <p><a data-bind="store-phone-link" class="contact-link"></a></p>
             </div>
           </div>
           <div class="contact-item">
             <div class="contact-icon">✉️</div>
             <div>
               <h4>Email</h4>
-              <p><a href="mailto:yogisportsgwalior@gmail.com" class="contact-link">yogisportsgwalior@gmail.com</a></p>
+              <p><a data-bind="store-email-link" class="contact-link"></a></p>
             </div>
           </div>
           <div class="contact-item">
             <div class="contact-icon">🕐</div>
             <div>
               <h4>Store Hours</h4>
-              <p>Mon - Sat: 9:00 AM - 9:00 PM<br>Sunday: 10:00 AM - 6:00 PM</p>
+              <p data-bind="store-hours"></p>
             </div>
           </div>
 
           <!-- Social Links -->
           <div class="contact-social">
-            <a href="https://www.instagram.com/yogisportsgwalior/" target="_blank" class="social-btn instagram" aria-label="Follow on Instagram">
+            <a data-bind="store-instagram-btn" target="_blank" class="social-btn instagram" aria-label="Follow on Instagram">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
               Instagram
             </a>
-            <a href="https://www.youtube.com/@yogisportsgwalior" target="_blank" class="social-btn youtube" aria-label="Subscribe on YouTube">
+            <a data-bind="store-youtube-btn" target="_blank" class="social-btn youtube" aria-label="Subscribe on YouTube">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 17a24.12 24.12 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.56 49.56 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24.12 24.12 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.55 49.55 0 0 1-16.2 0A2 2 0 0 1 2.5 17"/><path d="m10 15 5-3-5-3z"/></svg>
               YouTube
             </a>
@@ -442,7 +442,7 @@
           <!-- Google Maps Embed -->
           <div class="map-container">
             <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3580.5!2d78.2056157!3d26.2508025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjbCsDE1JzAyLjkiTiA3OMKwMTInMjAuMiJF!5e0!3m2!1sen!2sin!4v1" 
+              data-bind="map-embed" 
               width="100%" 
               height="280" 
               style="border:0; border-radius: 12px;" 
@@ -468,10 +468,10 @@
           </a>
           <p>Gwalior's premier sports destination, founded by Indian cricketer Yogendra Bhadoriya. Quality gear for every sport, every athlete.</p>
           <div class="footer-social">
-            <a href="https://www.instagram.com/yogisportsgwalior/" target="_blank" aria-label="Instagram">📷</a>
-            <a href="https://www.youtube.com/@yogisportsgwalior" target="_blank" aria-label="YouTube">🎬</a>
-            <a href="tel:+919301878889" aria-label="Call">📞</a>
-            <a href="https://wa.me/919301878889" target="_blank" aria-label="WhatsApp">💬</a>
+            <a data-bind="footer-instagram" target="_blank" aria-label="Instagram">📷</a>
+            <a data-bind="footer-youtube" target="_blank" aria-label="YouTube">🎬</a>
+            <a data-bind="footer-phone" aria-label="Call">📞</a>
+            <a data-bind="footer-whatsapp" target="_blank" aria-label="WhatsApp">💬</a>
           </div>
         </div>
         <div class="footer-column">
@@ -512,11 +512,7 @@
           <div class="dev-credit-card" id="devCard">
             <div class="dev-name">Chirag Bhadoria</div>
             <div class="dev-title">Full-Stack Developer & Designer</div>
-            <div class="dev-links">
-              <a href="mailto:chirag@example.com">✉️ chirag@example.com</a>
-              <a href="tel:+919876543210">📞 +91 98765 43210</a>
-              <a href="https://linkedin.com/in/chiragbhadoria" target="_blank">💼 LinkedIn</a>
-              <a href="https://github.com/chiragbhadoria" target="_blank">💻 GitHub</a>
+            <div class="dev-links" data-bind="dev-links">
             </div>
           </div>
         </div>
@@ -541,7 +537,7 @@
           <div class="coming-soon-icon">🎬</div>
           <h3>Videos Coming Soon!</h3>
           <p>Subscribe to our YouTube channel to be the first to watch.</p>
-          <a href="https://www.youtube.com/@yogisportsgwalior" target="_blank" class="btn-primary" style="margin-top: 20px;">
+          <a data-bind="video-modal-yt" target="_blank" class="btn-primary" style="margin-top: 20px;">
             ▶ Visit YouTube Channel
           </a>
         </div>
@@ -550,7 +546,7 @@
   </div>
 
   <!-- ====== FLOATING WHATSAPP BUTTON ====== -->
-  <a href="https://wa.me/919301878889?text=Hi!%20I'm%20interested%20in%20sports%20equipment%20from%20Yogi%20Sports%20Gwalior." 
+  <a data-bind="whatsapp-float" 
      target="_blank" 
      class="whatsapp-float" 
      id="whatsappFloat"
@@ -567,6 +563,7 @@
   </button>
 
   <!-- Scripts -->
+  <script src="config.js"></script>
   <script src="products.js"></script>
   <script src="script.js"></script>
 </body>

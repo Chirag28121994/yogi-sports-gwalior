@@ -3,6 +3,7 @@
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
+  bindConfig();
   initLoadingScreen();
   initNavbar();
   initMobileMenu();
@@ -15,6 +16,61 @@ document.addEventListener('DOMContentLoaded', () => {
   initTestimonialAutoScroll();
   initParallaxHero();
 });
+
+/* ---------- Config Binding ---------- */
+/* Reads SITE_CONFIG from config.js and populates all data-bind elements */
+function bindConfig() {
+  const s = SITE_CONFIG.store;
+  const d = SITE_CONFIG.developer;
+  const m = SITE_CONFIG.map;
+
+  const bindings = {
+    // Contact section
+    'store-address':       { html: s.address },
+    'store-phone-link':    { href: `tel:${s.phone}`, text: s.phoneDisplay },
+    'store-email-link':    { href: `mailto:${s.email}`, text: s.email },
+    'store-hours':         { html: s.hours },
+    'store-instagram-btn': { href: s.instagram },
+    'store-youtube-btn':   { href: s.youtube },
+
+    // Footer social
+    'footer-instagram':    { href: s.instagram },
+    'footer-youtube':      { href: s.youtube },
+    'footer-phone':        { href: `tel:${s.phone}` },
+    'footer-whatsapp':     { href: getWhatsAppUrl() },
+
+    // Video modal
+    'video-modal-yt':      { href: s.youtube },
+
+    // WhatsApp float
+    'whatsapp-float':      { href: getWhatsAppUrl() },
+
+    // Google Maps
+    'map-embed':           { attr: { src: m.embedUrl } },
+  };
+
+  for (const [key, opts] of Object.entries(bindings)) {
+    const el = document.querySelector(`[data-bind="${key}"]`);
+    if (!el) continue;
+    if (opts.href) el.href = opts.href;
+    if (opts.text) el.textContent = opts.text;
+    if (opts.html) el.innerHTML = opts.html;
+    if (opts.attr) {
+      for (const [a, v] of Object.entries(opts.attr)) el.setAttribute(a, v);
+    }
+  }
+
+  // Developer links (dynamic children)
+  const devLinksEl = document.querySelector('[data-bind="dev-links"]');
+  if (devLinksEl) {
+    devLinksEl.innerHTML = `
+      <a href="mailto:${d.email}">✉️ ${d.email}</a>
+      <a href="tel:${d.phone}">📞 ${d.phoneDisplay}</a>
+      <a href="${d.linkedin}" target="_blank">💼 LinkedIn</a>
+      <a href="${d.github}" target="_blank">💻 GitHub</a>
+    `;
+  }
+}
 
 /* ---------- Loading Screen ---------- */
 function initLoadingScreen() {
@@ -301,8 +357,7 @@ function sendViaWhatsApp() {
   if (phone) waText += ` My number: ${phone}.`;
   if (message) waText += ` ${message}`;
   
-  const waUrl = `https://wa.me/919301878889?text=${encodeURIComponent(waText)}`;
-  window.open(waUrl, '_blank');
+  window.open(getWhatsAppUrl(waText), '_blank');
 }
 
 /* ---------- Back to Top Button ---------- */
