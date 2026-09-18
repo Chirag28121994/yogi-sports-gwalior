@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ---------- Config Binding ---------- */
 /* Reads SITE_CONFIG from config.js and populates all data-bind elements */
 function bindConfig() {
+  if (typeof SITE_CONFIG === 'undefined') return;
   const s = SITE_CONFIG.store;
   const d = SITE_CONFIG.developer;
   const m = SITE_CONFIG.map;
