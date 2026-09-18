@@ -102,7 +102,7 @@
 
       <div class="yogendra-hero">
         <div class="yogendra-image-wrapper animate-on-scroll">
-          <img src="images/yogendra/shop-interior.jpg"
+          <img data-bind="yogi-photo" src="images/yogendra/yogi-lords-medal.jpg"
             alt="Yogendra Bhadoriya — Indian Cricketer & Founder of Yogi Sports">
         </div>
         <div class="yogendra-bio animate-on-scroll delay-2">
@@ -146,42 +146,16 @@
       <h3 class="yogendra-gallery-title animate-on-scroll">
         📸 Gallery
       </h3>
-      <div class="gallery-grid">
-        <div class="gallery-item animate-on-scroll delay-1" onclick="openLightbox(0)">
-          <img src="images/products/store-display-1.png" alt="Yogi Sports Store Interior">
-          <div class="overlay"><span>Yogi Sports — Grand Store</span></div>
-        </div>
-        <div class="gallery-item animate-on-scroll delay-2" onclick="openLightbox(1)">
-          <img src="images/products/store-exterior.png" alt="Yogi Sports Store Exterior">
-          <div class="overlay"><span>Store Exterior</span></div>
-        </div>
-        <div class="gallery-item animate-on-scroll delay-3" onclick="openLightbox(2)">
-          <img src="images/products/cricket-bats-display.png" alt="Cricket Bats Display">
-          <div class="overlay"><span>Premium Cricket Bats</span></div>
-        </div>
-        <div class="gallery-item animate-on-scroll delay-4" onclick="openLightbox(3)">
-          <img src="images/products/cricket-kit-bags.png" alt="Cricket Kit Bags Collection">
-          <div class="overlay"><span>Kit Bags Collection</span></div>
-        </div>
+      <div class="gallery-grid" id="galleryGrid">
+        <!-- Dynamically rendered from config.js -->
       </div>
 
       <!-- Videos -->
       <h3 class="yogendra-gallery-title animate-on-scroll">
         🎬 Videos
       </h3>
-      <div class="video-grid">
-        <div class="video-card animate-on-scroll delay-1"
-          onclick="openVideoModal('https://www.youtube.com/@yogisportsgwalior')">
-          <img src="images/yogendra/shop-interior.jpg" alt="Shop Inauguration">
-          <div class="play-btn">▶</div>
-          <div class="video-title">Yogi Sports — Grand Inauguration</div>
-        </div>
-        <div class="video-card animate-on-scroll delay-2"
-          onclick="openVideoModal('https://www.youtube.com/@yogisportsgwalior')">
-          <img src="images/products/cricket-bats-display.png" alt="Cricket Training Tips">
-          <div class="play-btn">▶</div>
-          <div class="video-title">Cricket Training Tips by Yogendra</div>
-        </div>
+      <div class="video-grid" id="videoGrid">
+        <!-- Dynamically rendered from config.js -->
       </div>
     </div>
   </section>

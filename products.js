@@ -4,22 +4,29 @@
    
    HOW TO ADD A NEW PRODUCT:
    ========================
-   1. Place your product photo in the "images/products/" folder
-   2. Add a new object to the PRODUCTS array below
-   3. Save the file — that's it!
+   1. Place your product photo in "images/products/" (or use an image URL).
+   2. Add a new product object to the PRODUCTS array below.
+   3. Save the file — the UI handles everything automatically!
 
-   Each product needs:
-   - name:    Product name (string)
-   - brand:   Brand name (string)
-   - sport:   Sport category — must be one of: 
-              "cricket", "football", "badminton", "hockey", "tennis", "kabaddi", "fitness"
-   - price:   Price with ₹ symbol (string)
-   - image:   Path to the image file (string)
-   - isNew:   Set to true for "NEW" badge (boolean)
+   FIELDS:
+   - name:    Product name (e.g. "SG Test Pro Bat")
+   - brand:   Brand name (e.g. "SG", "Yonex", "Cosco", "Nivia")
+   - sport:   Sport category — "cricket", "football", "badminton", "hockey", "tennis", "kabaddi", "fitness"
+   - price:   Price — can be number (4500) or string ("₹4,500"). It automatically formats with ₹ and commas!
+   - image:   File path ("images/products/my-photo.png") or URL ("https://..."). 
+              If the image is missing or broken, a neat sport placeholder is shown automatically.
+   - isNew:   Set to true for a "NEW" badge on the card (optional)
 
-   Example:
-   { name: "MRF Genius Grand", brand: "MRF", sport: "cricket", price: "₹8,500", image: "images/products/mrf-genius.jpg", isNew: true }
-   
+   EXAMPLE TO COPY-PASTE:
+   {
+     name: "MRF Genius Grand Edition",
+     brand: "MRF",
+     sport: "cricket",
+     price: 8500,
+     image: "images/products/mrf-genius.jpg",
+     isNew: true
+   },
+
    ============================================ */
 
 const PRODUCTS = [

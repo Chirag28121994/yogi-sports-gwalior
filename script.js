@@ -4,6 +4,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   bindConfig();
+  renderGallery();
+  renderVideos();
   initLoadingScreen();
   initNavbar();
   initMobileMenu();
@@ -70,6 +72,12 @@ function bindConfig() {
       <a href="${d.linkedin}" target="_blank">💼 LinkedIn</a>
       <a href="${d.github}" target="_blank">💻 GitHub</a>
     `;
+  }
+
+  // Yogi Photo binding
+  if (SITE_CONFIG.yogi && SITE_CONFIG.yogi.photo) {
+    const yogiPhotoEl = document.querySelector('[data-bind="yogi-photo"]');
+    if (yogiPhotoEl) yogiPhotoEl.src = SITE_CONFIG.yogi.photo;
   }
 }
 
@@ -162,14 +170,89 @@ function initScrollAnimations() {
   });
 }
 
+/* ---------- Dynamic Photo Gallery Rendering ---------- */
+let galleryImages = [];
+let currentLightboxIndex = 0;
+
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  if (!grid || typeof SITE_CONFIG === 'undefined' || !SITE_CONFIG.gallery) return;
+
+  grid.innerHTML = '';
+  galleryImages = [];
+
+  SITE_CONFIG.gallery.forEach((item, index) => {
+    galleryImages.push(item.image);
+
+    const card = document.createElement('div');
+    card.className = `gallery-item animate-on-scroll delay-${(index % 4) + 1}`;
+    card.setAttribute('onclick', `openLightbox(${index})`);
+
+    const caption = item.caption || 'Yogi Sports Gwalior';
+    card.innerHTML = `
+      <img src="${item.image}" alt="${caption}" loading="lazy" onerror="this.onerror=null; this.src='images/yogendra/shop-interior.jpg';">
+      <div class="overlay"><span>${caption}</span></div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+/* ---------- Dynamic Video Rendering ---------- */
+function renderVideos() {
+  const grid = document.getElementById('videoGrid');
+  if (!grid || typeof SITE_CONFIG === 'undefined' || !SITE_CONFIG.videos) return;
+
+  grid.innerHTML = '';
+
+  SITE_CONFIG.videos.forEach((video, index) => {
+    const card = document.createElement('div');
+    card.className = `video-card animate-on-scroll delay-${(index % 2) + 1}`;
+    const videoUrl = video.url || (SITE_CONFIG.store && SITE_CONFIG.store.youtube) || 'https://www.youtube.com/@yogisportsgwalior';
+    card.setAttribute('onclick', `openVideoModal('${videoUrl}')`);
+
+    card.innerHTML = `
+      <img src="${video.thumbnail}" alt="${video.title}" loading="lazy" onerror="this.onerror=null; this.src='images/yogendra/shop-interior.jpg';">
+      <div class="play-btn">▶</div>
+      <div class="video-title">${video.title}</div>
+    `;
+
+    grid.appendChild(card);
+  });
+}
+
+/* ---------- Price & Fallback Helpers ---------- */
+function formatProductPrice(price) {
+  if (price === undefined || price === null) return '₹0';
+  if (typeof price === 'number') {
+    return '₹' + price.toLocaleString('en-IN');
+  }
+  const str = String(price).trim();
+  if (str.startsWith('₹') || str.startsWith('Rs') || str.startsWith('INR')) {
+    return str;
+  }
+  const num = Number(str.replace(/[^0-9.]/g, ''));
+  if (!isNaN(num) && num > 0) {
+    return '₹' + num.toLocaleString('en-IN');
+  }
+  return str || '₹0';
+}
+
+function getProductFallbackSvg(sport) {
+  const emoji = getSportEmoji(sport);
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300"><rect fill="#0a0a2e" width="300" height="300"/><text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle" font-size="64">${emoji}</text><text x="50%" y="70%" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="13" fill="#8888aa">Photo Coming Soon</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
 /* ---------- Products Rendering ---------- */
 function renderProducts(filter) {
   const grid = document.getElementById('productsGrid');
-  if (!grid) return;
+  if (!grid || typeof PRODUCTS === 'undefined') return;
 
-  const filtered = filter === 'all'
+  const currentFilter = (filter || 'all').toLowerCase();
+  const filtered = currentFilter === 'all'
     ? PRODUCTS
-    : PRODUCTS.filter(p => p.sport === filter);
+    : PRODUCTS.filter(p => p.sport && p.sport.toLowerCase() === currentFilter);
 
   grid.innerHTML = '';
 
@@ -178,16 +261,28 @@ function renderProducts(filter) {
     card.className = `product-card animate-on-scroll delay-${(index % 4) + 1}`;
     card.setAttribute('data-sport', product.sport);
 
+    const formattedPrice = formatProductPrice(product.price);
+    const fallbackSrc = getProductFallbackSvg(product.sport);
+    const waInquiryMsg = `Hi! I'm interested in buying ${product.name} (${formattedPrice}) from Yogi Sports Gwalior. Is it available?`;
+    const waUrl = typeof getWhatsAppUrl === 'function' 
+      ? getWhatsAppUrl(waInquiryMsg)
+      : `https://wa.me/916263549706?text=${encodeURIComponent(waInquiryMsg)}`;
+
     card.innerHTML = `
       <div class="product-image">
-        <img src="${product.image}" alt="${product.name}" loading="lazy">
+        <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.onerror=null; this.src='${fallbackSrc}';">
         ${product.isNew ? '<span class="new-badge">New</span>' : ''}
         <span class="sport-tag">${getSportEmoji(product.sport)} ${capitalize(product.sport)}</span>
       </div>
       <div class="product-info">
         <h3>${product.name}</h3>
-        <p class="brand">${product.brand}</p>
-        <div class="price">${product.price}</div>
+        <p class="brand">${product.brand || 'Yogi Sports'}</p>
+        <div class="product-bottom-row">
+          <div class="price">${formattedPrice}</div>
+          <a href="${waUrl}" target="_blank" class="product-wa-btn" aria-label="Inquire about ${product.name} on WhatsApp">
+            💬 Inquire
+          </a>
+        </div>
       </div>
     `;
 
@@ -212,6 +307,7 @@ function getSportEmoji(sport) {
 }
 
 function capitalize(str) {
+  if (!str) return '';
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -233,16 +329,17 @@ function initFilterTabs() {
 }
 
 /* ---------- Photo Gallery Lightbox ---------- */
-let galleryImages = [];
-let currentLightboxIndex = 0;
-
 function initLightbox() {
-  // Collect all gallery images
-  const items = document.querySelectorAll('.gallery-item img');
-  galleryImages = Array.from(items).map(img => img.src);
+  // Synchronize galleryImages if not already populated
+  if (galleryImages.length === 0) {
+    const items = document.querySelectorAll('.gallery-item img');
+    galleryImages = Array.from(items).map(img => img.src);
+  }
 
   // Close on background click
   const lightbox = document.getElementById('lightbox');
+  if (!lightbox) return;
+
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) {
       closeLightbox();
@@ -260,27 +357,38 @@ function initLightbox() {
 }
 
 function openLightbox(index) {
+  // Sync if needed
+  if (galleryImages.length === 0) {
+    const items = document.querySelectorAll('.gallery-item img');
+    galleryImages = Array.from(items).map(img => img.src);
+  }
+
   currentLightboxIndex = index;
   const lightbox = document.getElementById('lightbox');
   const img = document.getElementById('lightboxImg');
-  img.src = galleryImages[index];
+  if (galleryImages[index]) {
+    img.src = galleryImages[index];
+  }
   lightbox.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
 function closeLightbox() {
   const lightbox = document.getElementById('lightbox');
-  lightbox.classList.remove('active');
+  if (lightbox) lightbox.classList.remove('active');
   document.body.style.overflow = '';
 }
 
 function navigateLightbox(direction) {
+  if (galleryImages.length === 0) return;
   currentLightboxIndex += direction;
   if (currentLightboxIndex < 0) currentLightboxIndex = galleryImages.length - 1;
   if (currentLightboxIndex >= galleryImages.length) currentLightboxIndex = 0;
 
   const img = document.getElementById('lightboxImg');
-  img.src = galleryImages[currentLightboxIndex];
+  if (img && galleryImages[currentLightboxIndex]) {
+    img.src = galleryImages[currentLightboxIndex];
+  }
 }
 
 /* ---------- Video Modal ---------- */

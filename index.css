@@ -909,11 +909,42 @@ button {
   margin-bottom: 12px;
 }
 
+.product-card .product-bottom-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 14px;
+  gap: 8px;
+}
+
 .product-card .product-info .price {
   font-family: var(--font-heading);
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--gold);
+}
+
+.product-wa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(37, 211, 102, 0.12);
+  color: #25D366;
+  border: 1px solid rgba(37, 211, 102, 0.3);
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-decoration: none;
+}
+
+.product-wa-btn:hover {
+  background: #25D366;
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
 }
 
 /* ============================================
